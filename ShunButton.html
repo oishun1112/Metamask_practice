@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>Simple MetaMask example.</title>
+	</head>
+	<body>
+		<p></p>
+		<div id="meta-mask-required"></div>
+		<fieldset>
+			<label>
+				Ether:
+				<input type="text" id="amount"></input>
+			</label>
+			<button onclick="send()">Donate to the Author</button>
+			<div id="response"></div>
+		</fieldset>
+
+		<script>
+			//Metamask injects the web3 library for us
+			window.onload = function(){
+				if(typeof web3 === 'undefined'){
+					document.getElementById('meta-mask-required').innerHTML = 'You need <a href="https://metamask.io/">MetaMask</a> browser plugin to run this example'
+				}
+			}
+			function send(){
+				web3.eth.sendTransaction({
+					from: web3.eth.coinbase,
+					to: 0x4612A97c3bF711F7048277d3642C68eac1148bF0,
+					value: web3.toWei(document.getElementById("amount").value, 'ether')
+				}, function(error, result){
+					if (!error){
+						document.getElementById('response').innerHTML = 'Success: <a href="https://testnet.etherscan.io/tx/' + result + '"> View Transaction </a>'
+					} else {
+						document.getElementById('response').innerHTML = '<pre>' + error + '<pre>'
+					}
+				})
+			}
+		</script>
+
+	</body>
+</html>
